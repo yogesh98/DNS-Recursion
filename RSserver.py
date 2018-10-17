@@ -1,6 +1,25 @@
 import sys
 import socket as mysoc
 
+
+def getHostnameFromEntry(entry):
+    splitEntry = entry.split(" ")
+    entryHostname = splitEntry[0].strip("\n")
+    entryHostname = splitEntry[0].strip("\r")
+    entryHostname = splitEntry[0].strip()
+    return entryHostname
+
+def getFlagFromEntry(entry):
+    splitEntry = entry.split(" ")
+    flag = splitEntry[-1]
+    flag = flag.strip()
+    return flag
+
+def getComOrEdu(entry):
+    entryHostname = getHostnameFromEntry(entry)
+    return entryHostname[len(entryHostname)-3:].strip()
+
+
 def RSserver():
 
     fDNSRSnames = open("PROJ2-DNSRS.txt", "r")
@@ -11,16 +30,11 @@ def RSserver():
     eduServerPosition = -1
     entryPos = 0
     for entry in fDNSRSList:
-
         inputEntries.append(entry.strip("\n"))
 
-        splitEntry = entry.split(" ")
-        entryHostname = splitEntry[0].strip("\n")
-        entryHostname = splitEntry[0].strip("\r")
-        entryHostname = splitEntry[0].strip()
-        flag = splitEntry[-1]
-        flag = flag.strip()
-        comOrEdu = entryHostname[len(entryHostname)-3:].strip()
+        entryHostname = getHostnameFromEntry(entry)
+        flag = getFlagFromEntry(entry)
+        comOrEdu = getComOrEdu(entry)
 
         if flag == 'NS':
             if comOrEdu == 'com':
@@ -51,12 +65,8 @@ def RSserver():
         print("[RS:] Recieved: %s" % client_data)
 
         for entry in inputEntries:
-            splitEntry = entry.split(" ")
-            entryHostname = splitEntry[0].strip("\n")
-            entryHostname = splitEntry[0].strip("\r")
-            entryHostname = splitEntry[0].strip()
-            flag = splitEntry[-1]
-            flag = flag.strip()
+            entryHostname = getHostnameFromEntry(entry)
+            flag = getFlagFromEntry(entry)
 
             if entryHostname == client_data:
                 foundEntry = True

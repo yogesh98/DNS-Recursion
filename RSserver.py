@@ -6,8 +6,28 @@ def RSserver():
     fDNSRSnames = open("PROJ2-DNSRS.txt", "r")
     fDNSRSList = fDNSRSnames.readlines()
     inputEntries = []
+
+    comServerPosition = -1
+    eduServerPosition = -1
+    entryPos = 0
     for entry in fDNSRSList:
+
         inputEntries.append(entry.strip("\n"))
+
+        splitEntry = entry.split(" ")
+        entryHostname = splitEntry[0].strip("\n")
+        entryHostname = splitEntry[0].strip("\r")
+        entryHostname = splitEntry[0].strip()
+        flag = splitEntry[-1]
+        flag = flag.strip()
+        comOrEdu = entryHostname[len(entryHostname)-3:].strip()
+
+        if flag == 'NS':
+            if comOrEdu == 'com':
+                comServerPosition = entryPos
+            elif comOrEdu == 'edu':
+                eduServerPosition = entryPos
+        entryPos += 1
 
     try:
         rs_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
@@ -43,15 +63,9 @@ def RSserver():
                 print("[RS:] Sending: %s" % entry)
                 csockid.send(entry)
                 break
-            if flag == 'NS':
-                if foundEntry == False:
-                    # TODO: Forward to appropriate TLDS server (com or edu)
-                    # TODO: Wait for data from TLDS server
-                    # TODO: Send data back to client
-                    pass
-
 
     rs_socket.close()
     exit()
+
 
 RSserver()

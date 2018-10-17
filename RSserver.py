@@ -1,4 +1,3 @@
-import sys
 import socket as mysoc
 
 
@@ -73,6 +72,12 @@ def RSserver():
                 print("[RS:] Sending: %s" % entry)
                 csockid.send(entry)
                 break
+        if foundEntry == False:
+            # TODO: use positions of com and edu to connect to either TLD
+            # TODO: send client_data to TLD, wait for data back
+            # TODO: send received data from TLD to client
+
+            pass
 
     rs_socket.close()
     exit()

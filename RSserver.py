@@ -3,10 +3,9 @@ import socket as mysoc
 
 def getHostnameFromEntry(entry):
     splitEntry = entry.split(" ")
-    entryHostname = splitEntry[0].strip("\n")
-    entryHostname = splitEntry[0].strip("\r")
-    entryHostname = splitEntry[0].strip()
+    entryHostname = splitEntry[0].strip("\n").strip("\r").strip()
     return entryHostname
+
 
 def getFlagFromEntry(entry):
     splitEntry = entry.split(" ")
@@ -17,6 +16,12 @@ def getFlagFromEntry(entry):
 def getComOrEdu(entry):
     entryHostname = getHostnameFromEntry(entry)
     return entryHostname[len(entryHostname)-3:].strip()
+
+
+def getIpFromDNS(entry):
+    splitEntry = entry.split(" ")
+    serverIP = splitEntry[1].strip("\n").strip("\r").strip()
+    return serverIP
 
 
 def RSserver():
@@ -73,11 +78,29 @@ def RSserver():
                 csockid.send(entry)
                 break
         if foundEntry == False:
-            # TODO: use positions of com and edu to connect to either TLD
             # TODO: send client_data to TLD, wait for data back
             # TODO: send received data from TLD to client
+            if getComOrEdu(client_data) == 'com':
+                comTLDIp = getIpFromDNS(inputEntries[comServerPosition])
+                try:
+                    com_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
+                except mysoc.error as err:
+                    print('{}\n'.format("com TLD socket open error", err))
+                com_addr = mysoc.gethostbyname(comTLDIp)
+                com_port = 51238
+                com_server_binding = (com_addr, com_port)
+                com_socket.connect(com_server_binding)
+            elif getComOrEdu(client_data) == 'edu':
+                eduTLDIp = getIpFromDNS(inputEntries[eduServerPosition])
+                try:
+                    edu_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
+                except mysoc.error as err:
+                    print('{}\n'.format("com TLD socket open error", err))
+                edu_addr = mysoc.gethostbyname(eduTLDIp)
+                edu_port = 51239
+                edu_server_binding = (edu_addr, edu_port)
+                edu_socket.connect(edu_server_binding)
 
-            pass
 
     rs_socket.close()
     exit()

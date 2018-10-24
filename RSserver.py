@@ -64,13 +64,11 @@ def RSserver():
         foundEntry = False
         if not client_data:
             break
-        client_data = client_data.strip("\n")
-        client_data = client_data.strip("\r")
+        client_data = client_data.strip("\n").strip("\r").strip()
         print("[RS:] Recieved: %s" % client_data)
 
         for entry in inputEntries:
             entryHostname = getHostnameFromEntry(entry)
-            flag = getFlagFromEntry(entry)
 
             if entryHostname == client_data:
                 foundEntry = True
@@ -90,6 +88,12 @@ def RSserver():
                 com_port = 51238
                 com_server_binding = (com_addr, com_port)
                 com_socket.connect(com_server_binding)
+
+                com_socket.send(client_data)
+                print("[RS:] sending to com: ", client_data)
+                com_data = com_socket.recv(100).strip()
+                print("[RS:] received %s from com, sending to client" % com_data)
+
             elif getComOrEdu(client_data) == 'edu':
                 eduTLDIp = getIpFromDNS(inputEntries[eduServerPosition])
                 try:
@@ -100,6 +104,11 @@ def RSserver():
                 edu_port = 51239
                 edu_server_binding = (edu_addr, edu_port)
                 edu_socket.connect(edu_server_binding)
+
+                edu_socket.send(client_data)
+                print("[RS:] sending to edu: ", client_data)
+                edu_data = edu_socket.recv(100).strip()
+                print("[RS:] received %s from edu, sending to client" % edu_data)
 
 
     rs_socket.close()

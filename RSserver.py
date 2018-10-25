@@ -36,7 +36,6 @@ def RSserver():
     for entry in fDNSRSList:
         inputEntries.append(entry.strip("\n"))
 
-        entryHostname = getHostnameFromEntry(entry)
         flag = getFlagFromEntry(entry)
         comOrEdu = getComOrEdu(entry)
 

@@ -19,6 +19,7 @@ def COMserver():
     com_socket.listen(1)
     hostname = mysoc.gethostname()
     com_host_ip = (mysoc.gethostbyname(hostname))
+    print("%s" % hostname)
     csockid,addr=com_socket.accept()
 
     while True:
@@ -42,12 +43,12 @@ def COMserver():
                 foundEntry = True
                 print("[COM:] Sending: %s" % entry)
                 csockid.send(entry)
-                break
-            if flag == 'NS':
+            elif flag == 'NS':
                 if foundEntry == False:
                     print("[COM:] Sending NS")
                     csockid.send(entry)
 
+    print("[COM:] SOCKET CLOSED")
     com_socket.close()
     exit()
 

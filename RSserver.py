@@ -85,6 +85,7 @@ def RSserver():
                     print('{}\n'.format("com TLD socket open error", err))
                 com_addr = mysoc.gethostbyname(comTLDIp)
                 com_port = 51238
+                print("[RS] com add %s" %com_addr)
                 com_server_binding = (com_addr, com_port)
                 com_socket.connect(com_server_binding)
 
@@ -111,7 +112,8 @@ def RSserver():
                 print("[RS:] received %s from edu, sending to client" % edu_data)
                 csockid.send(edu_data)
 
-
+    com_socket.close()
+    edu_socket.close()
     rs_socket.close()
     exit()
 

@@ -42,12 +42,12 @@ def EDUserver():
                 foundEntry = True
                 print("[EDU:] Sending: %s" % entry)
                 csockid.send(entry)
-                break
-            if flag == 'NS':
+            elif flag == 'NS':
                 if foundEntry == False:
                     print("[EDU:] Sending NS")
                     csockid.send(entry)
 
+    print("[EDU:] SOCKET CLOSED change made")
     edu_socket.close()
     exit()
 

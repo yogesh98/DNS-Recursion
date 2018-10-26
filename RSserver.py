@@ -26,7 +26,7 @@ def getIpFromDNS(entry):
 
 def RSserver():
 
-    fDNSRSnames = open("PROJ2-DNSRS.txt", "r")
+    fDNSRSnames = open("PROJ2-HNS.txt", "r")
     fDNSRSList = fDNSRSnames.readlines()
     inputEntries = []
 
@@ -75,7 +75,6 @@ def RSserver():
                 csockid.send(entry)
                 break
         if foundEntry == False:
-            # TODO: send client_data to TLD, wait for data back
             # TODO: send received data from TLD to client
             if getComOrEdu(client_data) == 'com':
                 comTLDIp = getIpFromDNS(inputEntries[comServerPosition])

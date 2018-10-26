@@ -1,0 +1,6 @@
+www.facebook.com 2.2.2.2 A
+www.a.com 2.2.2.2 A
+www.helloworld.com 2.2.2.2 A
+www.efg.com 2.2.2.2 A
+www.c.com 2.2.2.2 A
+

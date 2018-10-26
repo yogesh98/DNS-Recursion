@@ -16,7 +16,7 @@ def initSockets():
 
     # Open necessary files
     fOut = open("RESOLVED.txt", "w+")
-    fHostnames = open("PROJ1-HNS.txt", "r")
+    fHostnames = open("PROJ2-HNS.txt", "r")
     fHostnamesList = fHostnames.readlines()
 
     for line in fHostnamesList:

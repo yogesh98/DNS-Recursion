@@ -1,4 +1,5 @@
-www.d.edu
-www.cashmoneyheros.edu
-www.kill.cs.rutgers.edu
-www.liltunchi.edu
+www.d.edu 3.3.3.3 A
+www.cashmoneyheros.edu 3.3.3.3 A
+www.kill.cs.rutgers.edu 3.3.3.3 A
+www.liltunchi.edu 3.3.3.3 A
+Idk - NS

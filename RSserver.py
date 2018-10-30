@@ -91,8 +91,9 @@ def RSserver():
                 com_socket.send(client_data)
                 print("[RS:] sending to com: ", client_data)
                 com_data = com_socket.recv(100).strip()
-                print("[RS:] received %s from com, sending to client" % com_data)
-                csockid.send(com_data)
+                if com_data:
+                    print("[RS:] received %s from com, sending to client" % com_data)
+                    csockid.send(com_data)
 
             elif getComOrEdu(client_data) == 'edu':
                 eduTLDIp = getIpFromDNS(inputEntries[eduServerPosition])
@@ -108,8 +109,9 @@ def RSserver():
                 edu_socket.send(client_data)
                 print("[RS:] sending to edu: ", client_data)
                 edu_data = edu_socket.recv(100).strip()
-                print("[RS:] received %s from edu, sending to client" % edu_data)
-                csockid.send(edu_data)
+                if edu_data:
+                    print("[RS:] received %s from edu, sending to client" % edu_data)
+                    csockid.send(edu_data)
 
     com_socket.close()
     edu_socket.close()

@@ -33,6 +33,7 @@ def COMserver():
         rs_data = rsockid.recv(100)
         foundEntry = False
         if not rs_data:
+            print("[COM:] no data")
             break
         rs_data = rs_data.strip("\n").strip("\r").strip()
         print("[COM:] Recieved: %s" % rs_data)

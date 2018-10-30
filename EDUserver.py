@@ -30,6 +30,7 @@ def EDUserver():
         rs_data = rsockid.recv(100)
         foundEntry = False
         if not rs_data:
+            print("[EDU:] no data")
             break
         rs_data = rs_data.strip("\n").strip("\r").strip()
         print("[EDU:] Recieved: %s" % rs_data)

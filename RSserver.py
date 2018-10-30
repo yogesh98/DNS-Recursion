@@ -53,7 +53,7 @@ def RSserver():
     except mysoc.error as err:
         print('{}\n'.format("RS socket open error", err))
 
-    rs_server_binding=('', 51237)
+    rs_server_binding = ('', 51237)
     rs_socket.bind(rs_server_binding)
     rs_socket.listen(1)
     hostname = mysoc.gethostname()
@@ -76,7 +76,7 @@ def RSserver():
                 print("[RS:] Sending: %s" % entry)
                 csockid.send(entry)
                 break
-        if foundEntry == False:
+        if not foundEntry:
             if getComOrEdu(client_data) == 'com':
                 comTLDIp = getIpFromDNS(inputEntries[comServerPosition])
                 try:
@@ -85,7 +85,6 @@ def RSserver():
                     print('{}\n'.format("com TLD socket open error", err))
                 com_addr = mysoc.gethostbyname(comTLDIp)
                 com_port = 51238
-                print("[RS] com add %s" %com_addr)
                 com_server_binding = (com_addr, com_port)
                 com_socket.connect(com_server_binding)
 

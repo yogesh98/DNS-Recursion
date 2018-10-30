@@ -1,7 +1,7 @@
 www.google.com 1.1.1.1 A
 www.github.io 1.1.1.1 A
 www.baps.org 1.1.1.1 A
-TLDS1.edu ilab1.cs.Rutgers.edu NS
+TLDS1.edu patterns.cs.rutgers.edu NS
 www.alias.io 1.1.1.1 A
 www.suckma.qs 1.1.1.1 A
 TLDS2.com grep.cs.rutgers.edu NS

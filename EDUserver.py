@@ -29,24 +29,22 @@ def EDUserver():
     while True:
         rs_data = rsockid.recv(100)
         foundEntry = False
-        if not rs_data:
-            print("[EDU:] no data")
-            break
-        rs_data = rs_data.strip("\n").strip("\r").strip()
-        print("[EDU:] Recieved: %s" % rs_data)
+        if rs_data:
+            rs_data = rs_data.strip("\n").strip("\r").strip()
+            print("[EDU:] Recieved: %s" % rs_data)
 
-        for entry in inputEntries:
-            entryHostname = getHostnameFromEntry(entry)
+            for entry in inputEntries:
+                entryHostname = getHostnameFromEntry(entry)
 
-            if entryHostname == rs_data:
-                foundEntry = True
-                print("[EDU:] Sending: %s" % entry)
+                if entryHostname == rs_data:
+                    foundEntry = True
+                    print("[EDU:] Sending: %s" % entry)
+                    rsockid.send(entry)
+                    break
+            if not foundEntry:
+                error = rs_data + " - Error:HOST NOT FOUND"
+                print("[EDU:] Sending %s" % error)
                 rsockid.send(entry)
-                break
-        if not foundEntry:
-            error = rs_data + " - Error:HOST NOT FOUND"
-            print("[EDU:] Sending %s" % error)
-            rsockid.send(entry)
 
     print("[EDU:] SOCKET CLOSED change made")
     edu_socket.close()

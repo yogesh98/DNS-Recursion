@@ -8,8 +8,8 @@ def getHostnameFromEntry(entry):
 
 
 def COMserver():
-
-    fDNSCOMnames = open("PROJ2-DNSCOM.txt", "r")
+    DNS_Table_Name = sys.argv[1]
+    fDNSCOMnames = open(DNS_Table_Name, "r")
     fDNSCOMList = fDNSCOMnames.readlines()
     inputEntries = []
 
@@ -19,7 +19,7 @@ def COMserver():
     try:
         com_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
     except mysoc.error as err:
-        print('{}\n'.format("COM socket open error", err))
+        print('{}\n'.format("COM socket open error %" % err))
 
     com_server_binding = ('', 51238)
     com_socket.bind(com_server_binding)
@@ -47,7 +47,7 @@ def COMserver():
             if not foundEntry:
                 error = rs_data + " - Error:HOST NOT FOUND"
                 print("[COM:] Sending %s" % error)
-                rsockid.send(entry)
+                rsockid.send(error)
 
     print("[COM:] SOCKET CLOSED")
     com_socket.close()

@@ -7,8 +7,8 @@ def getHostnameFromEntry(entry):
     return entryHostname
 
 def EDUserver():
-
-    fDNSEDUnames = open("PROJ2-DNSEDU.txt", "r")
+    DNS_Table_Name = sys.argv[1]
+    fDNSEDUnames = open(DNS_Table_Name, "r")
     fDNSEDUList = fDNSEDUnames.readlines()
     inputEntries = []
     for entry in fDNSEDUList:
@@ -17,13 +17,14 @@ def EDUserver():
     try:
         edu_socket=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
     except mysoc.error as err:
-        print('{}\n'.format("EDU socket open error", err))
+        print('{}\n'.format("EDU socket open error %" % err))
 
     edu_server_binding=('', 51239)
     edu_socket.bind(edu_server_binding)
     edu_socket.listen(1)
     hostname = mysoc.gethostname()
     edu_host_ip = (mysoc.gethostbyname(hostname))
+    print("%s" % hostname)
     rsockid,addr=edu_socket.accept()
 
     while True:
@@ -44,7 +45,7 @@ def EDUserver():
             if not foundEntry:
                 error = rs_data + " - Error:HOST NOT FOUND"
                 print("[EDU:] Sending %s" % error)
-                rsockid.send(entry)
+                rsockid.send(error)
 
     print("[EDU:] SOCKET CLOSED change made")
     edu_socket.close()

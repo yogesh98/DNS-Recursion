@@ -1,8 +1,6 @@
-www.google.com 1.1.1.1 A
-www.github.io 1.1.1.1 A
-www.baps.org 1.1.1.1 A
-TLDS1.edu patterns.cs.rutgers.edu NS
-www.alias.io 1.1.1.1 A
-www.suckma.qs 1.1.1.1 A
-TLDS2.com grep.cs.rutgers.edu NS
-www.github.com 1.1.1.1 A
+facebook.com 96.93.166.232 A
+rutgers.edu 86.95.3.172 A
+nsf.gov 158.246.218.105 A
+happy.com 109.78.231.33 A
+www.test.org 104.209.216.174 A
+

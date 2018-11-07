@@ -1,5 +1,5 @@
 import socket as mysoc
-
+import sys
 
 def getHostnameFromEntry(entry):
     splitEntry = entry.split(" ")
@@ -25,29 +25,13 @@ def getIpFromDNS(entry):
 
 
 def RSserver():
-
-    fDNSRSnames = open("PROJ2-DNSRS.txt", "r")
+    DNS_Table_Name = sys.argv[3]
+    fDNSRSnames = open(DNS_Table_Name, "r")
     fDNSRSList = fDNSRSnames.readlines()
     inputEntries = []
 
-    comServerPosition = -1
-    eduServerPosition = -1
-    entryPos = 0
     for entry in fDNSRSList:
         inputEntries.append(entry.strip("\n"))
-
-        flag = getFlagFromEntry(entry)
-        comOrEdu = getComOrEdu(entry)
-
-        if flag == 'NS':
-            if comOrEdu == 'com':
-                comServerPosition = entryPos
-                print("[RS:] com position: %s" % comServerPosition)
-            elif comOrEdu == 'edu':
-                eduServerPosition = entryPos
-                print("[RS:] edu position: %s" % eduServerPosition)
-        entryPos += 1
-
     try:
         rs_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
     except mysoc.error as err:
@@ -57,9 +41,10 @@ def RSserver():
     rs_socket.bind(rs_server_binding)
     rs_socket.listen(1)
     hostname = mysoc.gethostname()
+    print("%s" % hostname)
     rs_host_ip = (mysoc.gethostbyname(hostname))
     csockid,addr=rs_socket.accept()
-
+    print("accepted")
     while True:
         client_data = csockid.recv(100)
         foundEntry = False
@@ -78,25 +63,25 @@ def RSserver():
                 break
         if not foundEntry:
             if getComOrEdu(client_data) == 'com':
-                comTLDIp = getIpFromDNS(inputEntries[comServerPosition])
+                comTLDIp = sys.argv[1]
                 try:
                     com_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
                 except mysoc.error as err:
-                    print('{}\n'.format("com TLD socket open error", err))
+                    print('{}\n'.format("com TLD socket open error %s" % err))
                 com_addr = mysoc.gethostbyname(comTLDIp)
                 com_port = 51238
                 com_server_binding = (com_addr, com_port)
                 com_socket.connect(com_server_binding)
 
                 com_socket.send(client_data)
-                print("[RS:] sending to com: ", client_data)
+                print("[RS:] sending to com: %s" % client_data)
                 com_data = com_socket.recv(100).strip()
                 if com_data:
                     print("[RS:] received %s from com, sending to client" % com_data)
                     csockid.send(com_data)
 
             elif getComOrEdu(client_data) == 'edu':
-                eduTLDIp = getIpFromDNS(inputEntries[eduServerPosition])
+                eduTLDIp = sys.argv[2]
                 try:
                     edu_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
                 except mysoc.error as err:
@@ -107,12 +92,15 @@ def RSserver():
                 edu_socket.connect(edu_server_binding)
 
                 edu_socket.send(client_data)
-                print("[RS:] sending to edu: ", client_data)
+                print("[RS:] sending to edu: %s" % client_data)
                 edu_data = edu_socket.recv(100).strip()
                 if edu_data:
                     print("[RS:] received %s from edu, sending to client" % edu_data)
                     csockid.send(edu_data)
-
+            else:
+                error = entry + " - Error:HOST NOT FOUND"
+                print("[RS:] Sending %s" % error)
+                csockid.send(error)
     com_socket.close()
     edu_socket.close()
     rs_socket.close()

@@ -1,6 +1,7 @@
 import socket as mysoc
 import sys
 
+#TODO: Fix Com and Edu server not recv anything after first
 def getHostnameFromEntry(entry):
     splitEntry = entry.split(" ")
     entryHostname = splitEntry[0].strip("\n").strip("\r").strip()

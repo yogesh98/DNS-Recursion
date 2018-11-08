@@ -31,12 +31,14 @@ def EDUserver():
         rs_data = rsockid.recv(100)
         foundEntry = False
         if rs_data:
-            rs_data = rs_data.strip("\n").strip("\r").strip()
+            if rs_data == "**//TERMINATE//**":
+                break
+            #rs_data = rs_data.strip("\n").strip("\r").strip()
             print("[EDU:] Recieved: %s" % rs_data)
 
             for entry in inputEntries:
                 entryHostname = getHostnameFromEntry(entry)
-
+                print("EntryHostname: %s" % entryHostname)
                 if entryHostname == rs_data:
                     foundEntry = True
                     print("[EDU:] Sending: %s" % entry)

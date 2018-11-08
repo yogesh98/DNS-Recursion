@@ -46,6 +46,10 @@ def RSserver():
     rs_host_ip = (mysoc.gethostbyname(hostname))
     csockid,addr=rs_socket.accept()
     print("accepted")
+
+    eduConnected = False
+    comConnected = False
+
     while True:
         client_data = csockid.recv(100)
         foundEntry = False
@@ -65,14 +69,16 @@ def RSserver():
         if not foundEntry:
             if getComOrEdu(client_data) == 'com':
                 comTLDIp = sys.argv[1]
-                try:
-                    com_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-                except mysoc.error as err:
-                    print('{}\n'.format("com TLD socket open error %s" % err))
-                com_addr = mysoc.gethostbyname(comTLDIp)
-                com_port = 51238
-                com_server_binding = (com_addr, com_port)
-                com_socket.connect(com_server_binding)
+                if not comConnected:
+                    try:
+                        com_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
+                    except mysoc.error as err:
+                        print('{}\n'.format("com TLD socket open error %s" % err))
+                    com_addr = mysoc.gethostbyname(comTLDIp)
+                    com_port = 51238
+                    com_server_binding = (com_addr, com_port)
+                    com_socket.connect(com_server_binding)
+                    comConnected = True
 
                 com_socket.send(client_data)
                 print("[RS:] sending to com: %s" % client_data)
@@ -83,14 +89,16 @@ def RSserver():
 
             elif getComOrEdu(client_data) == 'edu':
                 eduTLDIp = sys.argv[2]
-                try:
-                    edu_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
-                except mysoc.error as err:
-                    print('{}\n'.format("com TLD socket open error", err))
-                edu_addr = mysoc.gethostbyname(eduTLDIp)
-                edu_port = 51239
-                edu_server_binding = (edu_addr, edu_port)
-                edu_socket.connect(edu_server_binding)
+                if not eduConnected:
+                    try:
+                        edu_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
+                    except mysoc.error as err:
+                        print('{}\n'.format("com TLD socket open error", err))
+                    edu_addr = mysoc.gethostbyname(eduTLDIp)
+                    edu_port = 51239
+                    edu_server_binding = (edu_addr, edu_port)
+                    edu_socket.connect(edu_server_binding)
+                    eduConnected = True
 
                 edu_socket.send(client_data)
                 print("[RS:] sending to edu: %s" % client_data)
@@ -99,12 +107,13 @@ def RSserver():
                     print("[RS:] received %s from edu, sending to client" % edu_data)
                     csockid.send(edu_data)
             else:
-                error = entry + " - Error:HOST NOT FOUND"
+                error = client_data + " - Error:HOST NOT FOUND"
                 print("[RS:] Sending %s" % error)
                 csockid.send(error)
     com_socket.close()
     edu_socket.close()
     rs_socket.close()
+    print("Sockets Closed")
     exit()
 
 

@@ -31,8 +31,8 @@ def COMserver():
 
     while True:
         rs_data = rsockid.recv(100)
-        foundEntry = False
         if rs_data:
+            foundEntry = False
             rs_data = rs_data.strip("\n").strip("\r").strip()
             print("[COM:] Recieved: %s" % rs_data)
 
@@ -48,7 +48,6 @@ def COMserver():
                 error = rs_data + " - Error:HOST NOT FOUND"
                 print("[COM:] Sending %s" % error)
                 rsockid.send(error)
-                continue
 
     print("[COM:] SOCKET CLOSED")
     com_socket.close()

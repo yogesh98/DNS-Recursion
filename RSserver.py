@@ -110,10 +110,11 @@ def RSserver():
                 error = client_data + " - Error:HOST NOT FOUND"
                 print("[RS:] Sending %s" % error)
                 csockid.send(error)
+    com_socket.send("**//TERMINATE//**")
     com_socket.close()
+    edu_socket.send("**//TERMINATE//**")
     edu_socket.close()
     rs_socket.close()
-    print("Sockets Closed")
     exit()
 
 

@@ -32,6 +32,9 @@ def EDUserver():
     while True:
         rs_data = rsockid.recv(100)
         if rs_data:
+            if rs_data == "**//TERMINATE//**":
+                break
+        if rs_data:
             foundEntry = False
             rs_data = rs_data.strip("\n").strip("\r").strip()
             print("[EDU:] Recieved: %s" % rs_data)
@@ -50,7 +53,7 @@ def EDUserver():
                 rsockid.send(error)
 
 
-    print("[EDU:] SOCKET CLOSED change made")
+    print("[EDU:] SOCKET CLOSED")
     edu_socket.close()
     exit()
 

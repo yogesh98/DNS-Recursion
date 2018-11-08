@@ -29,11 +29,13 @@ def EDUserver():
 
     while True:
         rs_data = rsockid.recv(100)
+        if rs_data == "www.princeton.edu":
+            break
         foundEntry = False
         if rs_data:
             if rs_data == "**//TERMINATE//**":
                 break
-            #rs_data = rs_data.strip("\n").strip("\r").strip()
+            rs_data = rs_data.strip("\n").strip("\r").strip()
             print("[EDU:] Recieved: %s" % rs_data)
 
             for entry in inputEntries:
@@ -48,6 +50,7 @@ def EDUserver():
                 error = rs_data + " - Error:HOST NOT FOUND"
                 print("[EDU:] Sending %s" % error)
                 rsockid.send(error)
+                continue
 
     print("[EDU:] SOCKET CLOSED change made")
     edu_socket.close()

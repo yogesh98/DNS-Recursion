@@ -48,6 +48,7 @@ def COMserver():
                 error = rs_data + " - Error:HOST NOT FOUND"
                 print("[COM:] Sending %s" % error)
                 rsockid.send(error)
+                continue
 
     print("[COM:] SOCKET CLOSED")
     com_socket.close()
